@@ -12,7 +12,7 @@ public class TodoEndpoints : IEndpoints
 {
     public static void MapEndpoints(IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/todos")
+        var group = endpoints.MapGroup("api/todos")
             .WithTags(nameof(Todo));
 
         group.MapPost("",

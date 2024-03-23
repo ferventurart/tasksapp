@@ -10,7 +10,7 @@ using Web.Api.Host;
 
 var appAssembly = Assembly.GetExecutingAssembly();
 var builder = WebApplication.CreateBuilder(args);
-
+const string policyName = "SpaPolicy";
 // Common
 builder.Services.AddEfCore();
 
@@ -24,12 +24,12 @@ builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly, includeInte
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(setup => setup.SwaggerDoc("v1", new OpenApiInfo()
+builder.Services.AddSwaggerGen(setup => setup.SwaggerDoc("v1", new OpenApiInfo
 {
     Description = "With this api you could manage your daily tasks.",
     Title = "Task Api",
     Version = "v1",
-    Contact = new OpenApiContact()
+    Contact = new OpenApiContact
     {
         Email = "ferventurart@gmail.com",
         Name = "Fernando Ventura",
@@ -37,6 +37,12 @@ builder.Services.AddSwaggerGen(setup => setup.SwaggerDoc("v1", new OpenApiInfo()
     }
 }));
 builder.Services.AddHealthChecks();
+
+builder.Services.AddCors(options =>
+    options.AddPolicy(policyName,
+        policy => policy
+            .WithOrigins(builder.Configuration.GetValue<string>("ClientUrl")!)
+    ));
 
 builder.Services.ConfigureFeatures(builder.Configuration, appAssembly);
 
@@ -56,6 +62,8 @@ app.MapHealthChecks("health", new HealthCheckOptions
 {
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
+
+app.UseCors(policyName);
 
 app.UseExceptionHandler();
 

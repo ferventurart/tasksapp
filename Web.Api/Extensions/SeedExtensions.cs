@@ -23,7 +23,7 @@ public static class SeedExtensions
             .RuleFor(p => p.Category, v => TodoCategory.FromValue(v.PickRandom(categories)))
             .RuleFor(p => p.Status, v => TodoStatus.FromValue(v.PickRandom(status)));
         
-        dbContext.Todos.AddRange( tasks.Generate(30));
+        dbContext.Todos.AddRange( tasks.Generate(20));
         dbContext.SaveChanges();
     }
 }
