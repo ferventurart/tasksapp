@@ -1,0 +1,23 @@
+<div class="table-responsive mt-5">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Due Data</th>
+          <th>Category</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (task of tasks; track task.id; let idx=$index) {
+        <tr>
+          <td>{{ task.description }}</td>
+          <td>{{ task.status }}</td>
+          <td>{{ task.dueDate }}</td>
+          <td align="center"><app-category-badge category="{{task.category}}" />
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  

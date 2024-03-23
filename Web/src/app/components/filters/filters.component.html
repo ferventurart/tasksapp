@@ -1,0 +1,20 @@
+<div class="row mt-2">
+    <div class="col-md-6">
+      <label for="status">Status:</label>
+      <select class="form-select form-select-sm" id="status" (change)="onChangeStatus($event)">
+        <option value="all">All</option>
+        @for (status of status; track $index) {
+        <option value="{{ status }}">{{ status }}</option>
+        }
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label for="category">Category:</label>
+      <select class="form-select form-select-sm" id="category" (change)="onChangeCategory($event)">
+        <option value="all">All</option>
+        @for (category of categories; track $index) {
+        <option value="{{ category }}">{{ category }}</option>
+        }
+      </select>
+    </div>
+  </div>
