@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { filterReducer } from './filter.reducer';
 
 @Component({
   selector: 'app-filters',
@@ -14,7 +15,6 @@ export class FiltersComponent {
   
   onChangeCategory(event: any)
   {
-
   }
 
   onChangeStatus(event: any)
