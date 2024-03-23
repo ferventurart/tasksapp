@@ -1,4 +1,4 @@
-using Web.Api.Common.Shared;
+using Web.Api.Common.Models;
 
 namespace Web.Api.Extensions;
 
