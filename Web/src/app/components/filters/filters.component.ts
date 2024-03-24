@@ -1,24 +1,40 @@
 import { Component } from '@angular/core';
-import { filterReducer } from './filter.reducer';
+import { Observable } from 'rxjs';
+import { AppState } from '../../store/app.state';
+import { selectCategory, selectStatus } from '../../store/filter.selector';
+import { Store } from '@ngrx/store';
+import { AsyncPipe } from '@angular/common';
+import { categoryChanged, statusChanged } from '../../store/filter.actions';
 
 @Component({
   selector: 'app-filters',
   standalone: true,
-  imports: [],
+  imports: [AsyncPipe],
   templateUrl: './filters.component.html',
   styleUrl: './filters.component.css'
 })
 export class FiltersComponent {
 
+  category$: Observable<string>
+  status$: Observable<string>
+
   public status: string[] = ['Pending', 'Cancelled', 'Completed'];
   public categories: string[] = ['Orange', 'Yellow', 'Blue'];
+
+  constructor(private store: Store<AppState>){
+    this.category$ = this.store.select(selectCategory);
+    this.status$ = this.store.select(selectStatus);
+  }
   
-  onChangeCategory(event: any)
+  onChangeCategory($event: any)
   {
+    this.store.dispatch(categoryChanged({ category:$event.target.value }))
+    console.log($event.target.value);
   }
 
-  onChangeStatus(event: any)
+  onChangeStatus($event: any)
   {
-    
+    this.store.dispatch(statusChanged({ status: $event.target.value }))
+    console.log($event.target.value);
   }
 }
