@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { configRoutes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { provideState, provideStore } from '@ngrx/store';
-import { filterReducer, filterFeatureKey } from './store/filter.reducer';
+import { filterReducer, filterFeatureKey } from './state/filter/filter.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [

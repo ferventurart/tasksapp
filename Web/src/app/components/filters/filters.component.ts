@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AppState } from '../../store/app.state';
-import { selectCategory, selectStatus } from '../../store/filter.selector';
+import { AppState } from '../../state/app.state';
+import { selectCategory, selectStatus } from '../../state/filter/filter.selector';
 import { Store } from '@ngrx/store';
 import { AsyncPipe } from '@angular/common';
-import { categoryChanged, statusChanged } from '../../store/filter.actions';
+import { categoryChanged, statusChanged } from '../../state/filter/filter.actions';
 
 @Component({
   selector: 'app-filters',
