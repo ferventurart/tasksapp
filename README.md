@@ -32,6 +32,6 @@ ng serve --open
 
 _Este proyecto cuenta a nivel backend la implementacion de Vertical Slice Architecture_
 
-![VSA](https://jimmybogardsblog.blob.core.windows.net/jimmybogardsblog/3/2018/Picture0030.png)
+![VSA]((https://raw.githubusercontent.com/ferventurart/tasksapp/master/docs/vsa.png))
 
 Esta arquitectura se basa en una simple idea : _organizar tu codigo por funcionalidades_. Al contrario de las arquitecturas en capas donde se organiza el sistema orientado a capas tecnicas. 
