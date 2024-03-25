@@ -3,7 +3,7 @@
       <label for="status">Status:</label>
       <select class="form-select form-select-sm" id="status" (change)="onChangeStatus($event)">
         <option value="all">All</option>
-        @for (status of status; track $index) {
+        @for (status of statusList; track $index) {
         <option value="{{ status }}">{{ status }}</option>
         }
       </select>
@@ -12,7 +12,7 @@
       <label for="category">Category:</label>
       <select class="form-select form-select-sm" id="category" (change)="onChangeCategory($event)">
         <option value="all">All</option>
-        @for (category of categories; track $index) {
+        @for (category of categoryList; track $index) {
         <option value="{{ category }}">{{ category }}</option>
         }
       </select>

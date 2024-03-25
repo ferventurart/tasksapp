@@ -1,40 +1,42 @@
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import { AppState } from '../../state/app.state';
-import { selectCategory, selectStatus } from '../../state/filter/filter.selector';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AsyncPipe } from '@angular/common';
-import { categoryChanged, statusChanged } from '../../state/filter/filter.actions';
+import { loadTasks } from '../../store/task.actions';
 
 @Component({
   selector: 'app-filters',
   standalone: true,
-  imports: [AsyncPipe],
+  imports: [],
   templateUrl: './filters.component.html',
   styleUrl: './filters.component.css'
 })
-export class FiltersComponent {
+export class FiltersComponent implements OnInit {
 
-  category$: Observable<string>
-  status$: Observable<string>
-
-  public status: string[] = ['Pending', 'Cancelled', 'Completed'];
-  public categories: string[] = ['Orange', 'Yellow', 'Blue'];
-
-  constructor(private store: Store<AppState>){
-    this.category$ = this.store.select(selectCategory);
-    this.status$ = this.store.select(selectStatus);
+  status!: string;
+  category!: string;
+  public statusList: string[] = ['Pending', 'Cancelled', 'Completed'];
+  public categoryList: string[] = ['Orange', 'Yellow', 'Blue'];
+  
+  constructor(private store: Store) {}
+  
+  ngOnInit(): void {
+    this.status = 'all';
+    this.category = 'all';
   }
   
-  onChangeCategory($event: any)
+  reloadData()
   {
-    this.store.dispatch(categoryChanged({ category:$event.target.value }))
-    console.log($event.target.value);
+    this.store.dispatch(loadTasks({ category : this.category, status: this.status }));
+  }
+
+  onChangeCategory($event: any)
+  {  
+    this.category = $event.target.value;
+    this.reloadData()
   }
 
   onChangeStatus($event: any)
   {
-    this.store.dispatch(statusChanged({ status: $event.target.value }))
-    console.log($event.target.value);
+    this.status = $event.target.value;
+    this.reloadData()
   }
 }

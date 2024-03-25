@@ -1,34 +1,21 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CategoryBadgeComponent } from '../category-badge/category-badge.component';
 import { Task } from '../../models/task';
-import { TaskService } from '../../services/task.service';
+import { Store } from '@ngrx/store';
+import { getTasksList } from '../../store/task.selector';
+import { AsyncPipe } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [CategoryBadgeComponent],
+  imports: [CategoryBadgeComponent, AsyncPipe],
   templateUrl: './table.component.html',
   styleUrl: './table.component.css',
 })
-export class TableComponent implements OnInit {
-
-  @Input() state?: string;
-  @Input() category?: string;
-  public tasks!: Task[];
+export class TableComponent {
   
-  constructor(private taskService: TaskService) {}
+  tasks$: Observable<ReadonlyArray<Task>> = this.store.select(getTasksList);
 
-
-  ngOnInit(): void {
-    this.getData();
-  }
-
-  getData() {
-    this.taskService.getData(this.state ?? 'all', this.category ?? 'all').subscribe({
-      next: (result) => {
-        this.tasks = result;
-      },
-      error: (error) => console.error(error),
-    });
-  }
+  constructor(private store: Store) {}
 }
