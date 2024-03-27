@@ -1,0 +1,376 @@
+{
+	"info": {
+		"_postman_id": "b40e2901-32c4-4a2f-9a1f-6e690f960298",
+		"name": "Todos Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2276836"
+	},
+	"item": [
+		{
+			"name": "Functional Tests",
+			"item": [
+				{
+					"name": "When_Todo_Not_Exists",
+					"item": [
+						{
+							"name": "GetById",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Response is a valid JSON object\", function () {",
+											"    pm.response.to.be.json;",
+											"});",
+											"",
+											"pm.test(\"Response has type, title, status, and detail properties\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData).to.have.property('type');",
+											"    pm.expect(jsonData).to.have.property('title');",
+											"    pm.expect(jsonData).to.have.property('status');",
+											"    pm.expect(jsonData).to.have.property('detail');",
+											"});",
+											"",
+											"pm.test(\"Response Content-Type header is application/problem+json\", function () {",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.equal(\"application/problem+json\");",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7178/api/todos/:todoId",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7178",
+									"path": [
+										"api",
+										"todos",
+										":todoId"
+									],
+									"variable": [
+										{
+											"key": "todoId",
+											"value": "00000000-0000-0000-0000-000000000000"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "When_Filter_Todos_By_Completed_And_Yellow",
+					"item": [
+						{
+							"name": "GetAll",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response is an array of objects and is not empty\", function () {\r",
+											"    var todos = pm.response.json();\r",
+											"    pm.expect(todos).to.be.an('array').that.is.not.empty;\r",
+											"    todos.forEach(function(todo) {\r",
+											"        pm.expect(todo).to.be.an('object');\r",
+											"    });\r",
+											"    // Test for specific properties in each todo object\r",
+											"    todos.forEach(function(todo) {\r",
+											"        pm.expect(todo).to.have.property('id');\r",
+											"        pm.expect(todo).to.have.property('description');\r",
+											"        pm.expect(todo).to.have.property('status');\r",
+											"        pm.expect(todo).to.have.property('dueDate');\r",
+											"        pm.expect(todo).to.have.property('category');\r",
+											"    });\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response Content-Type is application/json\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Verify that the 'status' property of each todo object is either 'Pending' or 'Yellow'\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('array');\r",
+											"    responseData.forEach(function(todo) {\r",
+											"        pm.expect(todo.status).to.satisfy(function(status) {\r",
+											"            return status === \"Pending\" || status === \"Yellow\";\r",
+											"        }, \"Status should be either 'Pending' or 'Yellow'\");\r",
+											"    });\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Verify that the category property of each todo object is 'Yellow'\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('array');\r",
+											"    responseData.forEach(function(todo) {\r",
+											"        pm.expect(todo.category).to.equal(\"Yellow\");\r",
+											"    });\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7178/api/todos?status=Pending&category=Yellow",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7178",
+									"path": [
+										"api",
+										"todos"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "Pending"
+										},
+										{
+											"key": "category",
+											"value": "Yellow"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Create Todo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"description\": \"Warby Parker - Medical Appointment\",\n  \"dueDate\": \"03/20/2023\",\n  \"category\": \"Blue\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7178/api/todos",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7178",
+					"path": [
+						"api",
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Todo",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"description\": \"Warby Parker - Medical Appointment\",\n    \"dueDate\": \"03/20/2023\",\n    \"category\": \"Orange\",\n    \"status\": \"Completed\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7178/api/todos/a3c59266-7c26-d83b-36fd-0b89d541e671",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7178",
+					"path": [
+						"api",
+						"todos",
+						"a3c59266-7c26-d83b-36fd-0b89d541e671"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is an array of objects\", function () {\r",
+							"    pm.expect(pm.response.json()).to.be.an('array').that.is.not.empty;\r",
+							"    pm.response.json().forEach(function(todo) {\r",
+							"        pm.expect(todo).to.be.an('object').that.has.all.keys('id', 'description', 'status', 'dueDate', 'category');\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7178/api/todos?status=all&category=all",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7178",
+					"path": [
+						"api",
+						"todos"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "all"
+						},
+						{
+							"key": "category",
+							"value": "all"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get By Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function() {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is a valid JSON object\", function() {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Response has id, description, status, dueDate, and category properties\", function() {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('id');",
+							"    pm.expect(jsonData).to.have.property('description');",
+							"    pm.expect(jsonData).to.have.property('status');",
+							"    pm.expect(jsonData).to.have.property('dueDate');",
+							"    pm.expect(jsonData).to.have.property('category');",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7178/api/todos/:todoId",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7178",
+					"path": [
+						"api",
+						"todos",
+						":todoId"
+					],
+					"variable": [
+						{
+							"key": "todoId",
+							"value": "0aaecf51-11e1-84aa-91cb-863a7d329412"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Todo",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7178/api/todos/a123b3d2-45c1-70aa-cfe2-fdf8aa568d86",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7178",
+					"path": [
+						"api",
+						"todos",
+						"a123b3d2-45c1-70aa-cfe2-fdf8aa568d86"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
