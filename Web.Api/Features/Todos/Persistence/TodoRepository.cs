@@ -28,7 +28,9 @@ public sealed class TodoRepository(AppDbContext dbContext) : ITodoRepository
         if (TodoCategory.FromName(category) is { } todoCategory)
             query = query.Where(w => w.Category == todoCategory);
 
-        return await query.ToListAsync(cancellationToken);
+        return await query
+                    .AsNoTracking()
+                    .ToListAsync(cancellationToken);
     }
 
     public async Task<Todo?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
