@@ -1,12 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Api", "Web.Api\Web.Api.csproj", "{F5D85D16-ACF0-4919-A851-CF5B7D5CA36C}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34714.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Api", "Web.Api\Web.Api.csproj", "{F5D85D16-ACF0-4919-A851-CF5B7D5CA36C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{30A80D29-F149-4C7C-B6EE-40BBFBCAC576}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{81948D4D-4AEC-4968-A21B-E7A27DE27274}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Api.UnitTests", "tests\Web.Api.UnitTests\Web.Api.UnitTests.csproj", "{D16E2342-08C5-4B5F-A11A-4AB14438F18D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Api.UnitTests", "tests\Web.Api.UnitTests\Web.Api.UnitTests.csproj", "{D16E2342-08C5-4B5F-A11A-4AB14438F18D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,8 +26,14 @@ Global
 		{D16E2342-08C5-4B5F-A11A-4AB14438F18D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D16E2342-08C5-4B5F-A11A-4AB14438F18D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F5D85D16-ACF0-4919-A851-CF5B7D5CA36C} = {30A80D29-F149-4C7C-B6EE-40BBFBCAC576}
 		{D16E2342-08C5-4B5F-A11A-4AB14438F18D} = {81948D4D-4AEC-4968-A21B-E7A27DE27274}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0686E29D-B948-4704-8724-112400602D53}
 	EndGlobalSection
 EndGlobal
