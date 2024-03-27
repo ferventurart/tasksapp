@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 const string policyName = "SpaPolicy";
 // Common
 builder.Services.AddEfCore();
+builder.Services.AddMemoryCache();
 
 // Host
 builder.Services.AddMediatR(configure =>

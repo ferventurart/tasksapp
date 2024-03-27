@@ -16,7 +16,7 @@ public interface ITodoRepository
     void Delete(Todo todo);
 }
 
-internal class TodoRepository(AppDbContext dbContext) : ITodoRepository
+public sealed class TodoRepository(AppDbContext dbContext) : ITodoRepository
 {
     public async Task<IList<Todo>> GetAllAsync(string status, string category, CancellationToken cancellationToken)
     {

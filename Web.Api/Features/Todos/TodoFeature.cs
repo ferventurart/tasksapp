@@ -7,6 +7,7 @@ public sealed class TodoFeature : IFeature
 {
     public static void ConfigureServices(IServiceCollection services, IConfiguration config)
     {
-        services.AddScoped<ITodoRepository, TodoRepository>();
+        services.AddScoped<TodoRepository>();
+        services.AddScoped<ITodoRepository, CachedTodoRepository>();
     }
 }
