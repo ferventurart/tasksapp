@@ -1,10 +1,10 @@
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using Web.Api.Common.Abstractions.Messaging;
 using Web.Api.Common.Models;
 using Web.Api.Common.Persistence;
 using Web.Api.Features.Todos.Errors;
 using Web.Api.Features.Todos.Models;
+using Web.Api.Features.Todos.Persistence;
 
 namespace Web.Api.Features.Todos.Commands;
 
@@ -38,11 +38,13 @@ internal sealed class UpdateTodoCommandValidator : AbstractValidator<UpdateTodoC
     }
 }
 
-public sealed class UpdateTodoCommandHandler(AppDbContext dbContext) : ICommandHandler<UpdateTodoCommand, Guid>
+public sealed class UpdateTodoCommandHandler(
+    ITodoRepository repository,
+    IUnitOfWork unitOfWork) : ICommandHandler<UpdateTodoCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(UpdateTodoCommand request, CancellationToken cancellationToken)
     {
-        var todo = await dbContext.Todos.FirstOrDefaultAsync(f => f.Id == request.Id, cancellationToken);
+        var todo = await repository.GetByIdAsync(request.Id, cancellationToken);
         
         if (todo is null)
         {
@@ -58,14 +60,17 @@ public sealed class UpdateTodoCommandHandler(AppDbContext dbContext) : ICommandH
         {
             return Result.Failure<Guid>(TodoErrors.NotValidCategory(request.Category));
         }
-        
-        todo.Description = request.Description;
-        todo.DueDate = request.DueDate;
-        todo.Category = category;
-        todo.Status = status;
 
-        dbContext.Todos.Update(todo);
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        todo = new Todo() {
+            Id = todo.Id,
+            Category = category,
+            Description = request.Description,
+            DueDate = request.DueDate,
+            Status = status
+        };
+
+        repository.Update(todo);
+        await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
         return todo.Id;
     }

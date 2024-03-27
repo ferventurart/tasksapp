@@ -4,12 +4,13 @@ using Web.Api.Common.Models;
 using Web.Api.Common.Persistence;
 using Web.Api.Features.Todos.Errors;
 using Web.Api.Features.Todos.Models;
+using Web.Api.Features.Todos.Persistence;
 
 namespace Web.Api.Features.Todos.Commands;
 
 public sealed record CreateTodoCommand(
-    string Description, 
-    string? DueDate, 
+    string Description,
+    string? DueDate,
     string Category) : ICommand<Guid>;
 
 internal sealed class CreateTodoCommandValidator : AbstractValidator<CreateTodoCommand>
@@ -29,7 +30,9 @@ internal sealed class CreateTodoCommandValidator : AbstractValidator<CreateTodoC
     }
 }
 
-public sealed class CreateTodoCommandHandler(AppDbContext dbContext) : ICommandHandler<CreateTodoCommand, Guid>
+public sealed class CreateTodoCommandHandler(
+    ITodoRepository repository,
+    IUnitOfWork unitOfWork) : ICommandHandler<CreateTodoCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(CreateTodoCommand request, CancellationToken cancellationToken)
     {
@@ -37,17 +40,18 @@ public sealed class CreateTodoCommandHandler(AppDbContext dbContext) : ICommandH
         {
             return Result.Failure<Guid>(TodoErrors.NotValidCategory(request.Category));
         }
-        
+
         var todo = new Todo()
         {
-            Description = request.Description,
+            Id = Guid.NewGuid(),
             DueDate = request.DueDate,
+            Description = request.Description,
             Category = category,
             Status = TodoStatus.Pending
         };
 
-        await dbContext.Todos.AddAsync(todo, cancellationToken).ConfigureAwait(false);
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        repository.Add(todo);
+        await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
         return todo.Id;
     }

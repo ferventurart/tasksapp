@@ -10,5 +10,7 @@ public static class DependencyInjection
         {
             options.UseInMemoryDatabase("InMemoryDbForTesting");
         });
+        
+        services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<AppDbContext>());
     }
 }

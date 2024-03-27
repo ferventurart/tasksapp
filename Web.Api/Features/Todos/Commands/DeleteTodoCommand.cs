@@ -1,9 +1,9 @@
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using Web.Api.Common.Abstractions.Messaging;
 using Web.Api.Common.Models;
 using Web.Api.Common.Persistence;
 using Web.Api.Features.Todos.Errors;
+using Web.Api.Features.Todos.Persistence;
 
 namespace Web.Api.Features.Todos.Commands;
 
@@ -18,18 +18,20 @@ internal sealed class DeleteTodoCommandValidator : AbstractValidator<DeleteTodoC
     }
 }
 
-public sealed class DeleteTodoCommandHandler(AppDbContext dbContext) : ICommandHandler<DeleteTodoCommand, Guid>
+public sealed class DeleteTodoCommandHandler(
+    ITodoRepository repository,
+    IUnitOfWork unitOfWork) : ICommandHandler<DeleteTodoCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(DeleteTodoCommand request, CancellationToken cancellationToken)
     {
-        var todo = await dbContext.Todos.FirstOrDefaultAsync(f => f.Id == request.Id, cancellationToken);
+        var todo = await repository.GetByIdAsync(request.Id, cancellationToken).ConfigureAwait(false);
         if (todo is null)
         {
             return Result.Failure<Guid>(TodoErrors.NotFound(request.Id));
         }
 
-        dbContext.Todos.Remove(todo);
-        await dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        repository.Delete(todo);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return todo.Id;
     }
