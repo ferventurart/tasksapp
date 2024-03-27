@@ -38,7 +38,7 @@ internal sealed class UpdateTodoCommandValidator : AbstractValidator<UpdateTodoC
     }
 }
 
-public sealed class UpdateTodoCommandHandler(
+internal sealed class UpdateTodoCommandHandler(
     ITodoRepository repository,
     IUnitOfWork unitOfWork) : ICommandHandler<UpdateTodoCommand, Guid>
 {

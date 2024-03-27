@@ -7,7 +7,7 @@ using Web.Api.Features.Todos.Errors;
 using Web.Api.Features.Todos.Models;
 using Web.Api.Features.Todos.Persistence;
 
-namespace TestProject1.Features.Todos.Commands;
+namespace Web.Api.UnitTests.Features.Todos.Commands;
 
 public class DeleteTodoCommandTests
 {

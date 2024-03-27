@@ -9,7 +9,7 @@ public sealed record GetAllTodosQuery(
     string Status,
     string Category) : IQuery<IReadOnlyList<TodoResponse>>;
 
-public sealed class GetAllTodosQueryHandler(ITodoRepository repository)
+internal sealed class GetAllTodosQueryHandler(ITodoRepository repository)
     : IQueryHandler<GetAllTodosQuery, IReadOnlyList<TodoResponse>>
 {
     public async Task<Result<IReadOnlyList<TodoResponse>>> Handle(

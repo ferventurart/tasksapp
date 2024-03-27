@@ -18,7 +18,7 @@ internal sealed class DeleteTodoCommandValidator : AbstractValidator<DeleteTodoC
     }
 }
 
-public sealed class DeleteTodoCommandHandler(
+internal sealed class DeleteTodoCommandHandler(
     ITodoRepository repository,
     IUnitOfWork unitOfWork) : ICommandHandler<DeleteTodoCommand, Guid>
 {

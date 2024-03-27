@@ -7,7 +7,7 @@ namespace Web.Api.Features.Todos.Queries;
 
 public record GetTodoByIdQuery(Guid Id) : IQuery<TodoResponse>;
 
-public sealed class GetTodoByIdQueryHandler(ITodoRepository todoRepository) : IQueryHandler<GetTodoByIdQuery, TodoResponse>
+internal sealed class GetTodoByIdQueryHandler(ITodoRepository todoRepository) : IQueryHandler<GetTodoByIdQuery, TodoResponse>
 {
     public async Task<Result<TodoResponse>> Handle(GetTodoByIdQuery request, CancellationToken cancellationToken)
     {

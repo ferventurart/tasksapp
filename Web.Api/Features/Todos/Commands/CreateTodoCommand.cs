@@ -30,7 +30,7 @@ internal sealed class CreateTodoCommandValidator : AbstractValidator<CreateTodoC
     }
 }
 
-public sealed class CreateTodoCommandHandler(
+internal sealed class CreateTodoCommandHandler(
     ITodoRepository repository,
     IUnitOfWork unitOfWork) : ICommandHandler<CreateTodoCommand, Guid>
 {
